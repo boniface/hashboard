@@ -1,0 +1,52 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET           /                                            controllers.Application.index
+
+# Map static resources from the /public folder to the /assets URL path
+GET           /assets/*file                                controllers.Assets.at(path="/public", file)
+GET           /dbsetup                                     controllers.Application.dbsetup
+
+
+# Zones
+POST          /api/zone                                    controllers.ZoneController.create
+PUT           /api/zone/:id                                controllers.ZoneController.update(id)
+GET           /api/role/get/:id                            controllers.ZoneController.getZoneById(id:String)
+GET           /api/zones                                   controllers.ZoneController.getZones
+GET           /api/zone/status/:id/:status                 controllers.ZoneController.updateZoneStatus(id,status)
+DELETE        /api/zone/delete/:id                         controllers.ZoneController.deleteZone(id)
+
+# Feeds
+POST          /api/feed/create/:zone                       controllers.FeedsController.create(zone)
+GET           /api/feed/get/:zone/:id                      controllers.FeedsController.getFeedById(zone,id)
+GET           /api/feeds                                   controllers.FeedsController.getFeeds
+GET           /api/feeds/:zone                             controllers.FeedsController.getFeedsByZone(zone)
+PUT           /api/feed/update/:zone/:id                   controllers.FeedsController.update(zone,id)
+DELETE        /api/feed/delete/:zone/:id                   controllers.FeedsController.deleteFeed(zone,id)
+
+
+# CustomFeeds
+POST          /api/cfeed/create/:zone                      controllers.CustomFeedController.create(zone)
+GET           /api/cfeed/get/:zone/:sitecode/:id           controllers.CustomFeedController.getCustomFeedById(zone,sitecode,id)
+GET           /api/cfeeds                                  controllers.CustomFeedController.getAllCustomFeeds
+GET           /api/cfeeds/:zone                            controllers.CustomFeedController.getCustomFeedsByZone(zone)
+PUT           /api/cfeed/update/:zone/:id                  controllers.CustomFeedController.update(zone,id)
+DELETE        /api/cfeed/delete/:zone/:sitecode/:id        controllers.CustomFeedController.deleteFeed(zone,sitecode,id)
+
+# Social Media Feeds
+POST          /api/smfeed/create/:zone                     controllers.SocialaMediaFeedController.create(zone)
+GET           /api/smfeed/get/:zone/:id                    controllers.SocialaMediaFeedController.getFeedById(zone,id)
+GET           /api/smfeeds                                 controllers.SocialaMediaFeedController.getAllSocialMediaFeeds
+GET           /api/smfeeds/:zone                           controllers.SocialaMediaFeedController.getFeedsByZone(zone)
+PUT           /api/smfeed/update/:zone/:id                 controllers.SocialaMediaFeedController.update(zone,id)
+DELETE        /api/smfeed/delete/:zone/:id                 controllers.SocialaMediaFeedController.deleteFeed(zone,id)
+
+#Sites
+POST          /api/site/create/:zone                       controllers.SiteController.create(zone)
+PUT           /api/site/update/:zone/:id                   controllers.SiteController.update(zone,id)
+GET           /api/site/get/:zone/:id                      controllers.SiteController.getSiteById(zone,id)
+GET           /api/sites/:zone                             controllers.SiteController.getSitesByZone(zone)
+GET           /api/sites/all/:startvalue                   controllers.SiteController.getSites(startvalue)
+DELETE        /api/site/delete/:zone/:id                   controllers.SiteController.deleteSiteById(zone,id)
