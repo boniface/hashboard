@@ -2,24 +2,21 @@ package services.posts
 
 import java.util.{Date, UUID}
 
-import com.github.slugify.Slugify
 import com.gravity.goose.{Configuration, Goose}
 import conf.Util
-import domain.{ErrorReport, Link, Post}
+import domain.{ErrorReport, Post, CustomLink}
 import respository.{ErrorReportRespository, PostRespository}
-import services.posts.filters.FilterService
 
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import scala.util.{Failure, Success}
+import scala.concurrent.ExecutionContext.Implicits.global
 
 /**
- * Created by hashcode on 2014/12/11.
+ * Created by hashcode on 2014/12/12.
  */
-object FetchContentFromRssLinks {
-
-  def getContent(link: Link) = {
-    val article = Future {
+object FetchContentFromCustomLinks {
+  def getContent(link:CustomLink) = {
+    val article = Future{
       new Goose(new Configuration).extractContent(link.url)
     }
     article onComplete {
@@ -48,7 +45,5 @@ object FetchContentFromRssLinks {
       }
     }
   }
-
-
 
 }

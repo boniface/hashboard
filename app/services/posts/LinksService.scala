@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package services
+package services.posts
 
 import domain.Link
 import respository.LinksRespository
+import services.SocialMediaFeedsService
 
 /**
  * Created by hashcode on 2014/07/12.

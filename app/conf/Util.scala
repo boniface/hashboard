@@ -2,7 +2,9 @@ package conf
 
 import java.util.Date
 
+import com.github.slugify.Slugify
 import org.joda.time.{DateTimeConstants, DateTime}
+import services.posts.filters.FilterService
 
 import scala.util.{Failure, Success, Try}
 
@@ -41,5 +43,33 @@ object Util extends Enumeration {
       case Success(ans) => ans
       case Failure(ex) => 0
     }
+  }
+
+  def getMetaKeywords(title: String) = {
+    val cleanedWords = FilterService.removeStopWords(title)
+    cleanedWords.split(' ').map(_.capitalize).mkString(",")
+  }
+
+  def getMedecription(article: String) = {
+    if (article.length > 156) {
+      val description = article.substring(0, 156)
+      description.split(' ').map(_.capitalize).mkString(" ")
+    } else {
+      article
+    }
+  }
+
+  def getPrettySeo(title: String) = {
+    val cleanedWords = FilterService.removeStopWords(title)
+    val slg = new Slugify()
+    slg.slugify(cleanedWords)
+  }
+
+  def getCaption() = {
+    "NoCaption"
+  }
+
+  def getMovies = {
+
   }
 }
