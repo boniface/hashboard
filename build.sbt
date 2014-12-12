@@ -13,6 +13,8 @@ libraryDependencies ++= Seq(
   ws
 )
 
+resolvers += "Sonatype Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots/"
+
 libraryDependencies += "com.websudos" % "phantom-dsl_2.10" % "1.4.0"
 
 libraryDependencies += "com.datastax.cassandra" % "cassandra-driver-core" % "2.1.2"
@@ -55,6 +57,11 @@ libraryDependencies += "com.syncthemall" % "boilerpipe" % "1.2.2"
 libraryDependencies += "com.livestream" %% "scredis" % "2.0.2"
 
 libraryDependencies += "net.debasishg" %% "redisclient" % "2.13"
+
+libraryDependencies += "com.mohiva" %% "play-silhouette" % "2.0-SNAPSHOT"
+
+libraryDependencies += "net.codingwell" % "scala-guice_2.10" % "4.0.0-beta5"
+
 
 
 
