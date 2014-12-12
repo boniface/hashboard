@@ -5,6 +5,7 @@ import akka.event.Logging
 import akka.routing.RoundRobinPool
 import services.feeds.actors.{CustomFeedsActor, FeedsActor, SocialMediaFeedsActor}
 import services.messages.Messages.{StartMessage, ZoneMessage}
+import services.posts.actors.PostFeedLinkContentActor
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
@@ -22,15 +23,17 @@ class MainActor extends Actor {
       //      val fetchCustomLinks = context.actorOf(Props[FetchCustomLinksActor])
       val feedsActor = context.actorOf(Props[FeedsActor].withRouter(RoundRobinPool(nrOfInstances = 5)))
       val customFeedsActor = context.actorOf(Props[CustomFeedsActor].withRouter(RoundRobinPool(nrOfInstances = 5)))
-      val SocialMediaFeedsActor = context.actorOf(Props[SocialMediaFeedsActor].withRouter(RoundRobinPool(nrOfInstances = 5)))
+      val socialMediaFeedsActor = context.actorOf(Props[SocialMediaFeedsActor].withRouter(RoundRobinPool(nrOfInstances = 5)))
+      val postFeedLinkContentActor = context.actorOf(Props[PostFeedLinkContentActor].withRouter(RoundRobinPool(nrOfInstances = 5)))
 
       ZoneService.getZones map (zones => zones foreach (
         zone => {
           //          latestLinks ! Zone(zone.code)
           //          socialMediaLinks ! Zone(zone.code)
-          SocialMediaFeedsActor ! ZoneMessage(zone.code)
+          socialMediaFeedsActor ! ZoneMessage(zone.code)
           customFeedsActor ! ZoneMessage(zone.code)
           feedsActor ! ZoneMessage(zone.code)
+          postFeedLinkContentActor ! ZoneMessage(zone.code)
         })
         )
     }

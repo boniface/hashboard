@@ -27,7 +27,6 @@ libraryDependencies += "com.google.code.gson" % "gson" % "2.3.1"
 
 libraryDependencies += "com.rometools" % "rome" % "1.5.0"
 
-libraryDependencies += "joda-time" % "joda-time" % "2.5"
 
 libraryDependencies += "org.slf4j" % "slf4j-api" % "1.7.7"
 
@@ -44,6 +43,18 @@ libraryDependencies += "commons-lang" % "commons-lang" % "2.6"
 libraryDependencies += "org.apache.httpcomponents" % "httpclient" % "4.3.3"
 
 libraryDependencies += "org.jsoup" % "jsoup" % "1.7.3"
+
+libraryDependencies += "com.syncthemall" % "goose" % "2.1.25"
+
+libraryDependencies += "org.apache.httpcomponents" % "httpclient" % "4.3.3"
+
+libraryDependencies += "com.github.slugify" % "slugify" % "2.1.2"
+
+libraryDependencies += "com.syncthemall" % "boilerpipe" % "1.2.2"
+
+libraryDependencies += "com.livestream" %% "scredis" % "2.0.2"
+
+libraryDependencies += "net.debasishg" %% "redisclient" % "2.13"
 
 
 
