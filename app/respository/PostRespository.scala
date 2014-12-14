@@ -20,8 +20,11 @@ import java.util.Date
 
 import com.datastax.driver.core.{ResultSet, Row}
 import com.websudos.phantom.Implicits._
+import com.websudos.phantom.iteratee.Iteratee
 import conf.DataConnection
 import domain.Post
+import org.joda.time.DateTime
+
 
 import scala.concurrent.Future
 
@@ -142,5 +145,9 @@ object PostRespository extends PostRespository with DataConnection {
       .and(_.linkhash eqs linkhash).one()
   }
 
+  def getLatestPosts(zone: String): Future[Seq[Post]]= {
+    select.where(_.zone eqs zone)
+      .fetchEnumerator() run Iteratee.collect()
+  }
 
 }

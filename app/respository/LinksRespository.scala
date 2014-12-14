@@ -93,6 +93,10 @@ object LinksRespository extends LinksRespository with DataConnection {
     val date = DateTime.now.minusHours(2).toDate
     select.where(_.zone eqs zone).and(_.datepublished gte date).fetchEnumerator() run Iteratee.collect()
   }
+
+  def getPostedLinks(zone: String): Future[Iterator[Link]]= {
+    select.where(_.zone eqs zone).orderBy(_.datepublished.desc).fetchEnumerator() run Iteratee.slice(0, 100)
+  }
 }
 
 

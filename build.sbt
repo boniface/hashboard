@@ -29,7 +29,6 @@ libraryDependencies += "com.google.code.gson" % "gson" % "2.3.1"
 
 libraryDependencies += "com.rometools" % "rome" % "1.5.0"
 
-
 libraryDependencies += "org.slf4j" % "slf4j-api" % "1.7.7"
 
 libraryDependencies += "org.slf4j" % "slf4j-simple" % "1.7.7"

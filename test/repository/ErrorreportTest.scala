@@ -19,6 +19,9 @@ class ErrorreportTest extends FeatureSpec with GivenWhenThen{
       When("Created  ")
       ErrorReportRespository.save(error)
       Then("The Values must validate ")
+      val report = ErrorReportRespository.getErrorReport("ZM")
+
+
       And("")
     }
   }

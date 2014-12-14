@@ -8,6 +8,7 @@ GET           /                                            controllers.Applicati
 # Map static resources from the /public folder to the /assets URL path
 GET           /assets/*file                                controllers.Assets.at(path="/public", file)
 GET           /dbsetup                                     controllers.Application.dbsetup
+GET           /home                                        controllers.Application.home
 
 
 # Zones
@@ -50,3 +51,10 @@ GET           /api/site/get/:zone/:id                      controllers.SiteContr
 GET           /api/sites/:zone                             controllers.SiteController.getSitesByZone(zone)
 GET           /api/sites/all/:startvalue                   controllers.SiteController.getSites(startvalue)
 DELETE        /api/site/delete/:zone/:id                   controllers.SiteController.deleteSiteById(zone,id)
+
+# Stats
+
+GET           /api/stats/links/:zone                       controllers.LinksController.getCollectedLinks(zone)
+GET           /api/stats/errors/:zone                      controllers.ErrorReportsController.getErrorReport(zone)
+GET           /api/stats/posts/:zone                       controllers.PostsController.getPostTitles(zone)
+GET           /api/stats/customlinks/:zone                 controllers.LinksController.getCustomCollectedLinks(zone)

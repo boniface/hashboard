@@ -2,10 +2,11 @@ package respository
 
 import com.datastax.driver.core.{ResultSet, Row}
 import com.websudos.phantom.CassandraTable
-import com.websudos.phantom.Implicits.{PrimaryKey, PartitionKey, StringColumn}
 import com.websudos.phantom.column.DateColumn
+import com.websudos.phantom.iteratee.Iteratee
 import conf.DataConnection
 import domain.ErrorReport
+import com.websudos.phantom.Implicits._
 
 import scala.concurrent.Future
 
@@ -40,5 +41,9 @@ object ErrorReportRespository extends ErrorReportRespository with DataConnection
       .value(_.id, ereport.id)
       .value(_.message, ereport.message)
       .future()
+  }
+
+  def getErrorReport(zone: String): Future[Iterator[ErrorReport]]= {
+       select.where(_.zone eqs zone).fetchEnumerator() run Iteratee.slice(0, 100)
   }
 }
