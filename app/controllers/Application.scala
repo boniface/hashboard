@@ -41,9 +41,11 @@ object Application extends Controller {
   def AuthenticatedAction(f: Request[AnyContent] => Result): Action[AnyContent] = Action { request =>
       if (authenticate(request)) {
         f(request)
+
       }
       else {
         Unauthorized("Invalid user name or password")
+
       }
     }
 

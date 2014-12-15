@@ -57,4 +57,4 @@ DELETE        /api/site/delete/:zone/:id                   controllers.SiteContr
 GET           /api/stats/links/:zone                       controllers.LinksController.getCollectedLinks(zone)
 GET           /api/stats/errors/:zone                      controllers.ErrorReportsController.getErrorReport(zone)
 GET           /api/stats/posts/:zone                       controllers.PostsController.getPostTitles(zone)
-GET           /api/stats/customlinks/:zone                 controllers.LinksController.getCustomCollectedLinks(zone)
+GET           /api/stats/clinks/:zone                 controllers.LinksController.getCustomCollectedLinks(zone)
