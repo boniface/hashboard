@@ -1,5 +1,7 @@
 package respository
 
+import java.util.Date
+
 import com.datastax.driver.core.{ResultSet, Row}
 import com.websudos.phantom.CassandraTable
 import com.websudos.phantom.column.DateColumn
@@ -16,13 +18,10 @@ import scala.concurrent.Future
 class ErrorReportRespository extends CassandraTable[ErrorReportRespository, ErrorReport] {
 
   object zone extends StringColumn(this) with PartitionKey[String]
-
-  object id extends StringColumn(this) with PrimaryKey[String]
+  object id extends StringColumn(this) with PrimaryKey[String] with ClusteringOrder[String] with Descending
+  object date extends DateColumn(this) with PrimaryKey[Date] with ClusteringOrder[Date] with Descending
 
   object site extends StringColumn(this)
-
-  object date extends DateColumn(this)
-
   object message extends StringColumn(this)
 
   override def fromRow(row: Row): ErrorReport = {

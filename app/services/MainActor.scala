@@ -17,10 +17,6 @@ class MainActor extends Actor {
 
   override def receive: Receive = {
     case StartMessage(start) => {
-      //      val latestLinks = context.actorOf(Props[GetLinksActor])
-      //      val socialMediaLinks = context.actorOf(Props[GetSocialMediaLiksActor])
-      //      val customLinks = context.actorOf(Props[GetCustomLinksActor])
-      //      val fetchCustomLinks = context.actorOf(Props[FetchCustomLinksActor])
       val feedsActor = context.actorOf(Props[FeedsActor].withRouter(RoundRobinPool(nrOfInstances = 5)))
       val customFeedsActor = context.actorOf(Props[CustomFeedsActor].withRouter(RoundRobinPool(nrOfInstances = 5)))
       val socialMediaFeedsActor = context.actorOf(Props[SocialMediaFeedsActor].withRouter(RoundRobinPool(nrOfInstances = 5)))
@@ -29,8 +25,6 @@ class MainActor extends Actor {
 
       ZoneService.getZones map (zones => zones foreach (
         zone => {
-          //          latestLinks ! Zone(zone.code)
-          //          socialMediaLinks ! Zone(zone.code)
           socialMediaFeedsActor ! ZoneMessage(zone.code)
           customFeedsActor ! ZoneMessage(zone.code)
           feedsActor ! ZoneMessage(zone.code)

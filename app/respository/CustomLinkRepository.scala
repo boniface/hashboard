@@ -19,8 +19,8 @@ import scala.concurrent.Future
 class CustomLinkRepository extends CassandraTable[CustomLinkRepository, CustomLink] {
 
   object zone extends StringColumn(this) with PartitionKey[String]
-  object datepublished extends DateColumn(this) with PrimaryKey[Date]
-  object linkhash extends StringColumn(this) with PrimaryKey[String]
+  object datepublished extends DateColumn(this) with PrimaryKey[Date] with ClusteringOrder[Date] with Descending
+  object linkhash extends StringColumn(this) with PrimaryKey[String] with ClusteringOrder[String] with Descending
 
   object url extends StringColumn(this)
   object site extends StringColumn(this)

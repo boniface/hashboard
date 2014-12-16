@@ -29,13 +29,13 @@ object FetchContentFromRssLinks {
           link.linkhash,
           article.getDomain(),
           link.datePublished,
-          article.getTitle(),
+          link.title,
           article.getCleanedArticleText(),
-          Util.getMetaKeywords(article.title),
+          Util.getMetaKeywords(link.title),
           Util.getMedecription(article.getCleanedArticleText),
           article.getCanonicalLink,
           article.getTopImage().getImageSrc,
-          Util.getPrettySeo(article.title),
+          Util.getPrettySeo(link.title),
           article.getTopImage().getImageSrc,
           Util.getCaption(),
           link.siteCode
@@ -48,7 +48,5 @@ object FetchContentFromRssLinks {
       }
     }
   }
-
-
 
 }

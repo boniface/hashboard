@@ -34,9 +34,9 @@ class LinksRespository extends CassandraTable[LinksRespository, Link] {
 
   object zone extends StringColumn(this) with PartitionKey[String]
 
-  object datepublished extends DateColumn(this) with PrimaryKey[Date]
+  object datepublished extends DateColumn(this) with PrimaryKey[Date] with ClusteringOrder[Date] with Descending
 
-  object linkhash extends StringColumn(this) with PrimaryKey[String]
+  object linkhash extends StringColumn(this) with PrimaryKey[String] with ClusteringOrder[String] with Descending
 
   object url extends StringColumn(this)
 
