@@ -59,7 +59,6 @@ class LinksRespository extends CassandraTable[LinksRespository, Link] {
       linkType(row))
   }
 }
-
 object LinksRespository extends LinksRespository with DataConnection {
   override lazy val tableName = "links"
 
@@ -95,7 +94,7 @@ object LinksRespository extends LinksRespository with DataConnection {
   }
 
   def getPostedLinks(zone: String): Future[Iterator[Link]]= {
-    select.where(_.zone eqs zone).orderBy(_.datepublished.desc).fetchEnumerator() run Iteratee.slice(0, 100)
+    select.where(_.zone eqs zone).fetchEnumerator() run Iteratee.slice(0, 50)
   }
 }
 

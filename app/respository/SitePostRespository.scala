@@ -36,6 +36,7 @@ class SitePostRespository extends CassandraTable[SitePostRespository, Post] {
 
   object zone extends StringColumn(this)
 
+
   object linkhash extends StringColumn(this)
 
   object title extends StringColumn(this)

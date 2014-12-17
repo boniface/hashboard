@@ -53,6 +53,7 @@ object SiteRepository extends SiteRepository with DataConnection {
     delete.where(_.zone eqs zone).and(_.id eqs siteId).future();
   }
 
+
   def updateSite(siteId: String, site: Site) = {
     update.where(_.id eqs siteId)
       .modify(_.name setTo site.name)

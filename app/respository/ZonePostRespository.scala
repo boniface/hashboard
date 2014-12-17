@@ -77,7 +77,6 @@ class ZonePostRespository extends CassandraTable[ZonePostRespository, Post] {
     )
   }
 }
-
 object ZonePostRespository extends ZonePostRespository with DataConnection {
   override lazy val tableName = "zoneposts"
 

@@ -53,6 +53,7 @@ class PostRespository extends CassandraTable[PostRespository, Post] {
 
   object seo extends StringColumn(this)
 
+
   object imagePath extends StringColumn(this)
 
   object caption extends StringColumn(this)

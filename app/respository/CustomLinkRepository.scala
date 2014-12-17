@@ -57,13 +57,12 @@ object CustomLinkRepository extends CustomLinkRepository with DataConnection {
           .future()
       }}
   }
-
   def getLatestLinks(zone: String): Future[Seq[CustomLink]] = {
     val date = DateTime.now.minusHours(2).toDate
     select.where(_.zone eqs zone).and(_.datepublished gte date).fetchEnumerator() run Iteratee.collect()
   }
 
   def getPostedLinks(zone: String): Future[Iterator[CustomLink]]= {
-    select.where(_.zone eqs zone).orderBy(_.datepublished.desc).fetchEnumerator() run Iteratee.slice(0, 100)
+    select.where(_.zone eqs zone).fetchEnumerator() run Iteratee.slice(0, 50)
   }
 }
