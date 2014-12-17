@@ -15,7 +15,6 @@ object Application extends Controller {
   def options(path: String) = Action {
     Ok("")
   }
-
   def dbsetup = Action.async {
     val results = for {
       feed <- FeedsRespository.createTable()
@@ -26,6 +25,9 @@ object Application extends Controller {
       link <- LinksRespository.createTable()
       ereport <- ErrorReportRespository.createTable()
       clinks <- CustomLinkRepository.createTable()
+      posts <- PostRespository.createTable()
+      sposts <-SitePostRespository.createTable()
+      zposts <-ZonePostRespository.createTable()
     } yield (site)
     results map (result => {
       Ok(Json.toJson("Done"))

@@ -33,11 +33,11 @@ class PostRespository extends CassandraTable[PostRespository, Post] {
 
   object zone extends StringColumn(this) with PartitionKey[String]
 
-  object linkhash extends StringColumn(this) with PrimaryKey[String]
+  object linkhash extends StringColumn(this) with PrimaryKey[String] with ClusteringOrder[String] with Descending
 
-  object domain extends StringColumn(this) with PrimaryKey[String]
+  object domain extends StringColumn(this) with PrimaryKey[String] with ClusteringOrder[String] with Descending
 
-  object date extends DateColumn(this) with PrimaryKey[Date]
+  object date extends DateColumn(this) with PrimaryKey[Date] with ClusteringOrder[Date] with Descending
 
   object title extends StringColumn(this)
 

@@ -32,7 +32,7 @@ class ZonePostRespository extends CassandraTable[ZonePostRespository, Post] {
 
   object zone extends StringColumn(this) with PartitionKey[String]
 
-  object date extends DateColumn(this) with PrimaryKey[Date]
+  object date extends DateColumn(this) with PrimaryKey[Date]  with ClusteringOrder[Date] with Descending
 
   object linkhash extends StringColumn(this)
 

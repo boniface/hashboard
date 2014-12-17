@@ -31,7 +31,6 @@ class ZoneRespository extends CassandraTable[ZoneRespository, Zone] {
     )
   }
 }
-
 object ZoneRespository extends ZoneRespository with DataConnection {
   override lazy val tableName = "zones"
 
@@ -43,11 +42,9 @@ object ZoneRespository extends ZoneRespository with DataConnection {
       .value(_.flag, zone.flag)
       .future()
   }
-
   def getZoneById(code: String): Future[Option[Zone]] = {
     select.where(_.code eqs code).one()
   }
-
   def getAllZones: Future[Seq[Zone]] = {
     select.fetchEnumerator() run Iteratee.collect()
   }
@@ -57,13 +54,11 @@ object ZoneRespository extends ZoneRespository with DataConnection {
       .and(_.status setTo zone.status)
       .future()
   }
-
   def updateStatus(code: String, status: String): Future[ResultSet] = {
     update.where(_.code eqs code)
       .modify(_.status setTo status)
       .future()
   }
-
   def deleteZoneById(code: String): Future[ResultSet] = {
     delete.where(_.code eqs code).future()
   }

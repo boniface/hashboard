@@ -4,11 +4,11 @@ import java.util.Date
 
 import com.datastax.driver.core.{ResultSet, Row}
 import com.websudos.phantom.CassandraTable
+import com.websudos.phantom.Implicits._
 import com.websudos.phantom.column.DateColumn
 import com.websudos.phantom.iteratee.Iteratee
 import conf.DataConnection
 import domain.ErrorReport
-import com.websudos.phantom.Implicits._
 
 import scala.concurrent.Future
 
@@ -18,10 +18,13 @@ import scala.concurrent.Future
 class ErrorReportRespository extends CassandraTable[ErrorReportRespository, ErrorReport] {
 
   object zone extends StringColumn(this) with PartitionKey[String]
-  object id extends StringColumn(this) with PrimaryKey[String] with ClusteringOrder[String] with Descending
+
   object date extends DateColumn(this) with PrimaryKey[Date] with ClusteringOrder[Date] with Descending
 
+  object id extends StringColumn(this) with PrimaryKey[String] with ClusteringOrder[String] with Descending
+
   object site extends StringColumn(this)
+
   object message extends StringColumn(this)
 
   override def fromRow(row: Row): ErrorReport = {
@@ -42,7 +45,7 @@ object ErrorReportRespository extends ErrorReportRespository with DataConnection
       .future()
   }
 
-  def getErrorReport(zone: String): Future[Iterator[ErrorReport]]= {
-       select.where(_.zone eqs zone).fetchEnumerator() run Iteratee.slice(0, 100)
+  def getErrorReport(zone: String): Future[Iterator[ErrorReport]] = {
+    select.where(_.zone eqs zone).fetchEnumerator() run Iteratee.slice(0, 100)
   }
 }

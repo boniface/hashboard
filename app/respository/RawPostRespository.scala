@@ -32,9 +32,8 @@ import scala.concurrent.Future
 class RawPostRespository extends CassandraTable[RawPostRespository, RawPost] {
 
   object linkhash extends StringColumn(this) with PartitionKey[String]
-
-  object zone extends StringColumn(this) with PrimaryKey[String]
-  object datePublished extends DateColumn(this) with PrimaryKey[Date]
+  object zone extends StringColumn(this) with PrimaryKey[String]  with ClusteringOrder[String] with Descending
+  object datePublished extends DateColumn(this) with PrimaryKey[Date]  with ClusteringOrder[Date] with Descending
 
   object rawHtml extends StringColumn(this)
 
