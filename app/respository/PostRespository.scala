@@ -33,6 +33,8 @@ class PostRespository extends CassandraTable[PostRespository, Post] {
 
   object zone extends StringColumn(this) with PartitionKey[String]
 
+  object yeardate extends DateColumn(this) with PartitionKey[Date]
+
   object linkhash extends StringColumn(this) with PrimaryKey[String] with ClusteringOrder[String] with Descending
 
   object domain extends StringColumn(this) with PrimaryKey[String] with ClusteringOrder[String] with Descending
@@ -63,6 +65,7 @@ class PostRespository extends CassandraTable[PostRespository, Post] {
   override def fromRow(row: Row): Post = {
     Post(
       zone(row),
+      yeardate(row),
       linkhash(row),
       domain(row),
       date(row),
@@ -86,6 +89,7 @@ object PostRespository extends PostRespository with DataConnection {
   def save(post: Post): Future[ResultSet] = {
     insert
       .value(_.linkhash, post.linkhash)
+      .value(_.yeardate,post.yeardate)
       .value(_.domain, post.domain)
       .value(_.date, post.date)
       .value(_.title, post.title)
@@ -103,6 +107,7 @@ object PostRespository extends PostRespository with DataConnection {
        _ =>{
          SitePostRespository.insert
            .value(_.linkhash, post.linkhash)
+           .value(_.yeardate,post.yeardate)
            .value(_.domain, post.domain)
            .value(_.date, post.date)
            .value(_.title, post.title)
@@ -120,6 +125,7 @@ object PostRespository extends PostRespository with DataConnection {
            _ =>{
              ZonePostRespository.insert
                .value(_.linkhash, post.linkhash)
+               .value(_.yeardate,post.yeardate)
                .value(_.domain, post.domain)
                .value(_.date, post.date)
                .value(_.title, post.title)
@@ -146,9 +152,9 @@ object PostRespository extends PostRespository with DataConnection {
       .and(_.linkhash eqs linkhash).one()
   }
 
-  def getLatestPosts(zone: String): Future[Seq[Post]]= {
-    select.where(_.zone eqs zone)
-      .fetchEnumerator() run Iteratee.collect()
+  def getLatestPosts(zone: String,date:Date):  Future[Iterator[Post]]= {
+    select.where(_.zone eqs zone).and(_.yeardate eqs date)
+      .fetchEnumerator() run Iteratee.slice(0, 50)
   }
 
 }

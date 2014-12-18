@@ -32,6 +32,8 @@ class ZonePostRespository extends CassandraTable[ZonePostRespository, Post] {
 
   object zone extends StringColumn(this) with PartitionKey[String]
 
+  object yeardate extends DateColumn(this) with PartitionKey[Date]
+
   object date extends DateColumn(this) with PrimaryKey[Date]  with ClusteringOrder[Date] with Descending
 
   object linkhash extends StringColumn(this)
@@ -61,6 +63,7 @@ class ZonePostRespository extends CassandraTable[ZonePostRespository, Post] {
   override def fromRow(row: Row): Post = {
     Post(
       zone(row),
+      yeardate(row),
       linkhash(row),
       domain(row),
       date(row),
@@ -83,6 +86,7 @@ object ZonePostRespository extends ZonePostRespository with DataConnection {
   def save(post: Post): Future[ResultSet] = {
     insert
       .value(_.linkhash, post.linkhash)
+      .value(_.yeardate,post.yeardate)
       .value(_.domain, post.domain)
       .value(_.date, post.date)
       .value(_.title, post.title)

@@ -23,6 +23,7 @@ object FetchContentFromCustomLinks {
       case Success(article) => {
         val post = Post(
           link.zone,
+          Util.yearDate,
           link.linkhash,
           article.getDomain(),
           link.datePublished,

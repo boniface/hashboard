@@ -17,7 +17,6 @@ import scala.util.{Failure, Success}
  * Created by hashcode on 2014/12/11.
  */
 object FetchContentFromRssLinks {
-
   def getContent(link: Link) = {
     val article = Future {
       new Goose(new Configuration).extractContent(link.url)
@@ -26,6 +25,7 @@ object FetchContentFromRssLinks {
       case Success(article) => {
         val post = Post(
           link.zone,
+          Util.yearDate,
           link.linkhash,
           article.getDomain(),
           link.datePublished,

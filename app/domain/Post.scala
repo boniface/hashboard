@@ -24,7 +24,8 @@ import play.api.libs.json.Json
  * Created by hashcode on 2014/07/11.
  */
 case class Post(
-                 zone:String,
+                 zone: String,
+                 yeardate: Date,
                  linkhash: String,
                  domain: String,
                  date: Date,
@@ -33,11 +34,11 @@ case class Post(
                  metakeywords: String,
                  metaDescription: String,
                  link: String,
-                 imageUrl:String,
-                 seo:String,
-                 imagePath:String,
-                 caption:String,
-                 siteCode:String
+                 imageUrl: String,
+                 seo: String,
+                 imagePath: String,
+                 caption: String,
+                 siteCode: String
                  )
 
 object Post {

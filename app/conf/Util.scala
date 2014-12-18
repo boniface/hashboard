@@ -38,6 +38,10 @@ object Util extends Enumeration {
   def getDateFromString(date:String):Date ={
     DateTime.parse(date).toDate
   }
+
+  def yearDate = {
+    DateTime.now.dayOfYear().withMinimumValue().withTimeAtStartOfDay().toDate
+  }
   def getIntFromString(value:String):Int ={
     Try(Integer.parseInt(value)) match {
       case Success(ans) => ans

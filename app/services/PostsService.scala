@@ -1,5 +1,6 @@
 package services
 
+import conf.Util
 import org.joda.time.DateTime
 import respository.PostRespository
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -11,7 +12,7 @@ object PostsService {
   val today = DateTime.now.withTimeAtStartOfDay().toLocalDate.toDate
 
   def getTodayZonePosts(zone:String) = {
-    PostRespository.getLatestPosts(zone) map (posts => posts.filter(_.date.after(today)))
+    PostRespository.getLatestPosts(zone,Util.yearDate)
   }
 
 }

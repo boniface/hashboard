@@ -12,6 +12,6 @@ object PostsController extends Controller{
   def getPostTitles(zone:String)= Action.async{
     request =>
     PostsService.getTodayZonePosts(zone) map (posts=>
-      Ok(Json.toJson(posts)))
+      Ok(Json.toJson(posts.toSeq)))
   }
 }

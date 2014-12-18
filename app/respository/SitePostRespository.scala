@@ -32,10 +32,11 @@ class SitePostRespository extends CassandraTable[SitePostRespository, Post] {
 
   object domain extends StringColumn(this) with PartitionKey[String]
 
+  object yeardate extends DateColumn(this) with PartitionKey[Date]
+
   object date extends DateColumn(this) with PrimaryKey[Date]  with ClusteringOrder[Date] with Descending
 
   object zone extends StringColumn(this)
-
 
   object linkhash extends StringColumn(this)
 
@@ -61,6 +62,7 @@ class SitePostRespository extends CassandraTable[SitePostRespository, Post] {
   override def fromRow(row: Row): Post = {
     Post(
       zone(row),
+      yeardate(row),
       linkhash(row),
       domain(row),
       date(row),
@@ -84,6 +86,7 @@ object SitePostRespository extends SitePostRespository with DataConnection {
   def save(post: Post): Future[ResultSet] = {
     insert
       .value(_.linkhash, post.linkhash)
+      .value(_.yeardate,post.yeardate)
       .value(_.domain, post.domain)
       .value(_.date, post.date)
       .value(_.title, post.title)
@@ -104,13 +107,11 @@ object SitePostRespository extends SitePostRespository with DataConnection {
     select.where(_.domain eqs domain).orderBy(_.date.desc)
       .fetchEnumerator() run Iteratee.collect()
   }
-
   def getSitePostsByDate( domain: String, date: Date): Future[Seq[Post]] = {
     select.where(_.domain eqs domain)
       .and(_.date gte date).orderBy(_.date.desc)
       .fetchEnumerator() run Iteratee.collect()
   }
-
   def getSitePostsByYesterday(domain: String, date: Date): Future[Seq[Post]] = {
     val today = new DateTime(date).plusDays(1).withTimeAtStartOfDay().toDate
     val yesterday = new DateTime(date).withTimeAtStartOfDay().toDate
