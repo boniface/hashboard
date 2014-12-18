@@ -36,9 +36,10 @@ class SitePostRespository extends CassandraTable[SitePostRespository, Post] {
 
   object date extends DateColumn(this) with PrimaryKey[Date]  with ClusteringOrder[Date] with Descending
 
+  object linkhash extends StringColumn(this) with PrimaryKey[String] with ClusteringOrder[String] with Descending
+
   object zone extends StringColumn(this)
 
-  object linkhash extends StringColumn(this)
 
   object title extends StringColumn(this)
 

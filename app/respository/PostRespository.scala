@@ -23,8 +23,6 @@ import com.websudos.phantom.Implicits._
 import com.websudos.phantom.iteratee.Iteratee
 import conf.DataConnection
 import domain.Post
-import org.joda.time.DateTime
-
 
 import scala.concurrent.Future
 
@@ -33,13 +31,13 @@ class PostRespository extends CassandraTable[PostRespository, Post] {
 
   object zone extends StringColumn(this) with PartitionKey[String]
 
-  object yeardate extends DateColumn(this) with PartitionKey[Date]
+  object date extends DateColumn(this) with PrimaryKey[Date] with ClusteringOrder[Date] with Descending
 
   object linkhash extends StringColumn(this) with PrimaryKey[String] with ClusteringOrder[String] with Descending
 
-  object domain extends StringColumn(this) with PrimaryKey[String] with ClusteringOrder[String] with Descending
+  object yeardate extends DateColumn(this)
 
-  object date extends DateColumn(this) with PrimaryKey[Date] with ClusteringOrder[Date] with Descending
+  object domain extends StringColumn(this)
 
   object title extends StringColumn(this)
 
@@ -54,7 +52,6 @@ class PostRespository extends CassandraTable[PostRespository, Post] {
   object imageUrl extends StringColumn(this)
 
   object seo extends StringColumn(this)
-
 
   object imagePath extends StringColumn(this)
 
@@ -89,7 +86,7 @@ object PostRespository extends PostRespository with DataConnection {
   def save(post: Post): Future[ResultSet] = {
     insert
       .value(_.linkhash, post.linkhash)
-      .value(_.yeardate,post.yeardate)
+      .value(_.yeardate, post.yeardate)
       .value(_.domain, post.domain)
       .value(_.date, post.date)
       .value(_.title, post.title)
@@ -104,56 +101,75 @@ object PostRespository extends PostRespository with DataConnection {
       .value(_.caption, post.caption)
       .value(_.siteCode, post.siteCode)
       .future() flatMap {
-       _ =>{
-         SitePostRespository.insert
-           .value(_.linkhash, post.linkhash)
-           .value(_.yeardate,post.yeardate)
-           .value(_.domain, post.domain)
-           .value(_.date, post.date)
-           .value(_.title, post.title)
-           .value(_.article, post.article)
-           .value(_.metakeywords, post.metakeywords)
-           .value(_.metaDescription, post.metaDescription)
-           .value(_.link, post.link)
-           .value(_.zone, post.zone)
-           .value(_.imageUrl, post.imageUrl)
-           .value(_.seo, post.seo)
-           .value(_.imagePath, post.imagePath)
-           .value(_.caption, post.caption)
-           .value(_.siteCode, post.siteCode)
-           .future() flatMap {
-           _ =>{
-             ZonePostRespository.insert
-               .value(_.linkhash, post.linkhash)
-               .value(_.yeardate,post.yeardate)
-               .value(_.domain, post.domain)
-               .value(_.date, post.date)
-               .value(_.title, post.title)
-               .value(_.article, post.article)
-               .value(_.metakeywords, post.metakeywords)
-               .value(_.metaDescription, post.metaDescription)
-               .value(_.link, post.link)
-               .value(_.zone, post.zone)
-               .value(_.imageUrl, post.imageUrl)
-               .value(_.seo, post.seo)
-               .value(_.imagePath, post.imagePath)
-               .value(_.caption, post.caption)
-               .value(_.siteCode, post.siteCode)
-               .future()
-           }
-         }
-       }
+      _ => {
+        WebSiteRepository.insert
+          .value(_.linkhash, post.linkhash)
+          .value(_.yeardate, post.yeardate)
+          .value(_.domain, post.domain)
+          .value(_.date, post.date)
+          .value(_.title, post.title)
+          .value(_.article, post.article)
+          .value(_.metakeywords, post.metakeywords)
+          .value(_.metaDescription, post.metaDescription)
+          .value(_.link, post.link)
+          .value(_.zone, post.zone)
+          .value(_.imageUrl, post.imageUrl)
+          .value(_.seo, post.seo)
+          .value(_.imagePath, post.imagePath)
+          .value(_.caption, post.caption)
+          .value(_.siteCode, post.siteCode)
+          .future() flatMap {
+          _ => {
+            ZonePostRespository.insert
+              .value(_.linkhash, post.linkhash)
+              .value(_.yeardate, post.yeardate)
+              .value(_.domain, post.domain)
+              .value(_.date, post.date)
+              .value(_.title, post.title)
+              .value(_.article, post.article)
+              .value(_.metakeywords, post.metakeywords)
+              .value(_.metaDescription, post.metaDescription)
+              .value(_.link, post.link)
+              .value(_.zone, post.zone)
+              .value(_.imageUrl, post.imageUrl)
+              .value(_.seo, post.seo)
+              .value(_.imagePath, post.imagePath)
+              .value(_.caption, post.caption)
+              .value(_.siteCode, post.siteCode)
+              .future() flatMap {
+              _ => {
+                SitePostRespository.insert
+                  .value(_.linkhash, post.linkhash)
+                  .value(_.yeardate, post.yeardate)
+                  .value(_.domain, post.domain)
+                  .value(_.date, post.date)
+                  .value(_.title, post.title)
+                  .value(_.article, post.article)
+                  .value(_.metakeywords, post.metakeywords)
+                  .value(_.metaDescription, post.metaDescription)
+                  .value(_.link, post.link)
+                  .value(_.zone, post.zone)
+                  .value(_.imageUrl, post.imageUrl)
+                  .value(_.seo, post.seo)
+                  .value(_.imagePath, post.imagePath)
+                  .value(_.caption, post.caption)
+                  .value(_.siteCode, post.siteCode)
+                  .future()
+              }
+            }
+          }
+        }
+      }
     }
   }
-
 
   def getPostById(zone: String, linkhash: String): Future[Option[Post]] = {
     select.where(_.zone eqs zone)
       .and(_.linkhash eqs linkhash).one()
   }
 
-  def getLatestPosts(zone: String,date:Date):  Future[Iterator[Post]]= {
-    select.where(_.zone eqs zone).and(_.yeardate eqs date)
+  def getLatestPosts(zone: String, date: Date): Future[Iterator[Post]] = {
+    select.where(_.zone eqs zone)
       .fetchEnumerator() run Iteratee.slice(0, 50)
   }
 

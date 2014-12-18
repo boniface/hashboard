@@ -15,6 +15,7 @@ object Application extends Controller {
   def options(path: String) = Action {
     Ok("")
   }
+
   def dbsetup = Action.async {
     val results = for {
       feed <- FeedsRespository.createTable()
@@ -26,8 +27,9 @@ object Application extends Controller {
       ereport <- ErrorReportRespository.createTable()
       clinks <- CustomLinkRepository.createTable()
       posts <- PostRespository.createTable()
-      sposts <-SitePostRespository.createTable()
-      zposts <-ZonePostRespository.createTable()
+      sposts <- SitePostRespository.createTable()
+      zposts <- ZonePostRespository.createTable()
+      web <- WebSiteRepository.createTable()
     } yield (site)
     results map (result => {
       Ok(Json.toJson("Done"))
@@ -41,15 +43,15 @@ object Application extends Controller {
   def authenticate(request: Request[AnyContent]) = false
 
   def AuthenticatedAction(f: Request[AnyContent] => Result): Action[AnyContent] = Action { request =>
-      if (authenticate(request)) {
-        f(request)
+    if (authenticate(request)) {
+      f(request)
 
-      }
-      else {
-        Unauthorized("Invalid user name or password")
-
-      }
     }
+    else {
+      Unauthorized("Invalid user name or password")
+
+    }
+  }
 
 
 }
