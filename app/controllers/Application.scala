@@ -30,6 +30,7 @@ object Application extends Controller {
       sposts <- SitePostRespository.createTable()
       zposts <- ZonePostRespository.createTable()
       web <- WebSiteRepository.createTable()
+      cpl <-CustomProcessedLinkskRepository.createTable()
     } yield (site)
     results map (result => {
       Ok(Json.toJson("Done"))
