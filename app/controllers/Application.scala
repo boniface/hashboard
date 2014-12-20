@@ -3,13 +3,15 @@ package controllers
 import play.api.libs.json.Json
 import play.api.mvc._
 import respository._
+import play.api.Play.current
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
 object Application extends Controller {
 
   def index = Action {
-    Ok(views.html.index("Hello Your new application is ready."))
+   val value =  current.configuration.getString("cluster")
+    Ok(views.html.index("Hello Your new application is ready."+value))
   }
 
   def options(path: String) = Action {
@@ -31,6 +33,7 @@ object Application extends Controller {
       zposts <- ZonePostRespository.createTable()
       web <- WebSiteRepository.createTable()
       cpl <-CustomProcessedLinkskRepository.createTable()
+      sp <-SinglePostRepository.createTable()
     } yield (site)
     results map (result => {
       Ok(Json.toJson("Done"))
