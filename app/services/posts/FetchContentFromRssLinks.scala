@@ -27,7 +27,7 @@ object FetchContentFromRssLinks {
           link.zone,
           Util.yearDate,
           link.linkhash,
-          article.getDomain(),
+          link.site,
           link.datePublished,
           link.title,
           article.getCleanedArticleText(),
