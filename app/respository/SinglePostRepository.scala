@@ -1,15 +1,11 @@
 package respository
 
-import java.util.Date
-
 import com.datastax.driver.core.{ResultSet, Row}
 import com.websudos.phantom.CassandraTable
 import com.websudos.phantom.Implicits._
-import com.websudos.phantom.column.{DateColumn, PrimitiveColumn}
-import com.websudos.phantom.iteratee.Iteratee
+import com.websudos.phantom.column.DateColumn
 import conf.DataConnection
 import domain.Post
-import org.joda.time.DateTime
 
 import scala.concurrent.Future
 
@@ -18,11 +14,11 @@ import scala.concurrent.Future
  */
 class SinglePostRepository extends CassandraTable[SinglePostRepository, Post] {
 
-  object domain extends StringColumn(this) with PartitionKey[String]
+  object linkhash extends StringColumn(this) with PartitionKey[String]
 
-  object linkhash extends StringColumn(this) with PrimaryKey[String] with ClusteringOrder[String] with Descending
+  object domain extends StringColumn(this)
 
-  object date extends DateColumn(this) with PrimaryKey[Date] with ClusteringOrder[Date] with Descending
+  object date extends DateColumn(this)
 
   object yeardate extends DateColumn(this)
 
