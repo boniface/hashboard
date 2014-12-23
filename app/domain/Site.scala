@@ -5,12 +5,9 @@ import play.api.libs.json.Json
 /**
  * Created by hashcode on 2014/12/01.
  */
-case class Site(
-                 id: String,
-                 zone:String,
-                 name: String,
+case class Site( zone:String,
                  url: String,
-                 description: String,
+                 code:String,
                  logo:String
                  )
 object Site {

@@ -14,20 +14,16 @@ import scala.concurrent.Future
  */
 class SiteRepository extends CassandraTable[SiteRepository, Site] {
 
-  object id extends StringColumn(this) with PrimaryKey[String]
-
   object zone extends StringColumn(this) with PartitionKey[String]
 
-  object name extends StringColumn(this)
+  object url extends StringColumn(this) with PrimaryKey[String]
 
-  object url extends StringColumn(this)
-
-  object description extends StringColumn(this)
+  object code extends StringColumn(this)
 
   object logo extends StringColumn(this)
 
   override def fromRow(row: Row): Site = {
-    Site(id(row), zone(row), name(row), url(row), description(row), logo(row))
+    Site(zone(row), url(row), code(row), logo(row))
   }
 }
 
@@ -36,30 +32,19 @@ object SiteRepository extends SiteRepository with DataConnection {
 
   def save(site: Site): Future[ResultSet] = {
     insert
-      .value(_.id, site.id)
-      .value(_.name, site.name)
       .value(_.url, site.url)
-      .value(_.description, site.description)
+      .value(_.code, site.code)
       .value(_.zone, site.zone)
       .value(_.logo, site.logo)
       .future()
   }
 
-  def getSiteById(zone: String, siteId: String): Future[Option[Site]] = {
-    select.where(_.zone eqs zone).and(_.id eqs siteId).one();
+  def getSiteById(zone: String, site: String): Future[Option[Site]] = {
+    select.where(_.zone eqs zone).and(_.url eqs site).one()
   }
 
-  def deleteSiteById(zone:String,siteId: String): Future[ResultSet] = {
-    delete.where(_.zone eqs zone).and(_.id eqs siteId).future();
-  }
-
-
-  def updateSite(siteId: String, site: Site) = {
-    update.where(_.id eqs siteId)
-      .modify(_.name setTo site.name)
-      .and(_.url setTo site.url)
-      .and(_.description setTo site.description)
-      .future()
+  def deleteSiteById(zone:String,site: String): Future[ResultSet] = {
+    delete.where(_.zone eqs zone).and(_.url eqs site).future()
   }
 
   def getSitesByNumber(start: Int, limit: Int): Future[Iterator[Site]] = {

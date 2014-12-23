@@ -14,15 +14,15 @@ object SiteService {
   }
 
   def update(site: Site) = {
-    service.updateSite(site.id, site)
+    service.save(site)
   }
 
-  def delete(zone:String, id: String) = {
-    service.deleteSiteById(zone,id)
+  def delete(zone:String, site: String) = {
+    service.deleteSiteById(zone,site)
   }
 
-  def getsiteById(zone:String, id: String) = {
-    service.getSiteById(zone,id)
+  def getsiteById(zone:String, site: String) = {
+    service.getSiteById(zone, site)
   }
 
   def getSites(start:Int, limit:Int) = {
