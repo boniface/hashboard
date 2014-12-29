@@ -18,7 +18,7 @@ object SiteService {
   }
 
   def delete(zone:String, site: String) = {
-   
+
     service.deleteSiteById(zone,site)
   }
 
