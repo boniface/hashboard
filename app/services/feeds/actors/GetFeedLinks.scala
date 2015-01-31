@@ -3,10 +3,12 @@ package services.feeds.actors
 import java.net.URL
 import java.util.{Date, UUID}
 
+import com.gravity.goose.{Goose, Configuration}
 import com.rometools.rome.feed.synd.SyndEntry
 import com.rometools.rome.io.{SyndFeedInput, XmlReader}
 import conf.Util
 import domain.{ErrorReport, Feed, Link}
+import org.apache.commons.io.IOUtils
 import respository.{LinksRespository, ErrorReportRespository, FeedsRespository}
 
 import scala.collection.JavaConverters._
@@ -30,11 +32,14 @@ object GetFeedLinks {
   private def postLinks(feed: Feed) = {
     val f: Future[List[SyndEntry]] = Future {
 
-      val urlConnection = new URL(feed.feedLink).openConnection()
-      //      urlConnection.setConnectTimeout(4000)
-      //      urlConnection.setReadTimeout(4000)
+      val config = new Configuration
+      config.setBrowserUserAgent("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36")
+      val goose = new Goose(config)
+      val article = goose.extractContent(feed.feedLink)
 
-      val read = new XmlReader(urlConnection)
+      val inputStream = IOUtils.toInputStream(article.getRawHtml(), "UTF-8")
+
+      val read = new XmlReader(inputStream)
       new SyndFeedInput().build(read).getEntries.asScala.toList
 
     }

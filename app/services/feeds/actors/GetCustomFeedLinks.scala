@@ -1,9 +1,9 @@
 package services.feeds.actors
 
-import java.util.{UUID, Date}
+import java.util.{Date, UUID}
 
 import conf.Util
-import domain.{ErrorReport, CustomFeed, CustomLink}
+import domain.{CustomFeed, CustomLink, ErrorReport}
 import org.jsoup.Jsoup
 import respository.{CustomFeedRepository, CustomLinkRepository, CustomProcessedLinkskRepository}
 
@@ -18,16 +18,22 @@ object GetCustomFeedLinks {
 
   def processCustomFeeds(zone: String) = {
     val customFeeds = CustomFeedRepository.getFeedsByZone(zone)
-    customFeeds map (customFeedsLinks =>{
-      customFeedsLinks foreach(customFeed =>getLinksFromCustomFeeds(customFeed))
+    customFeeds map (customFeedsLinks => {
+      customFeedsLinks foreach (customFeed => getLinksFromCustomFeeds(customFeed))
     })
   }
 
-  private def getLinksFromCustomFeeds(customFeed:CustomFeed) = {
+  private def getLinksFromCustomFeeds(customFeed: CustomFeed) = {
     val plinks = scala.collection.mutable.MutableList[Clink]()
 
-    Try(Jsoup.connect(customFeed.feedLink).get().select("a[href]").asScala
-      .filter(link => link.attr("abs:href").contains(customFeed.filter))) match {
+    Try(Jsoup.connect(customFeed.feedLink)
+      .userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36")
+      .referrer("https://www.google.com")
+      .get()
+      .select("a[href]")
+      .asScala
+      .filter(link => link.attr("abs:href")
+      .contains(customFeed.filter))) match {
       case Success(result) => result foreach (link => {
         val r = link.attr("abs:href").split("=")
         if (r.size > 1) {
@@ -35,7 +41,7 @@ object GetCustomFeedLinks {
         }
       })
       case Failure(ex) => {
-        val error = ErrorReport(customFeed.zone,UUID.randomUUID().toString,customFeed.feedLink,new Date,"CUSTOM FEED ERROR: "+ex.getMessage)
+        val error = ErrorReport(customFeed.zone, UUID.randomUUID().toString, customFeed.feedLink, new Date, "CUSTOM FEED ERROR: " + ex.getMessage)
         scala.collection.mutable.MutableList[Clink]()
       }
     }

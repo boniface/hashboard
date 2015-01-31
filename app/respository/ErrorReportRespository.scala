@@ -42,6 +42,7 @@ object ErrorReportRespository extends ErrorReportRespository with DataConnection
       .value(_.date, ereport.date)
       .value(_.id, ereport.id)
       .value(_.message, ereport.message)
+      .ttl(86400)
       .future()
   }
 

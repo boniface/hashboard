@@ -7,7 +7,7 @@ import play.api.libs.json.Json
  * Created by hashcode on 2014/12/01.
  */
 case class SiteModel(zone: String,
-                     url: String,
+                     url:  String,
                      code: String,
                      logo: String
                       ) {
