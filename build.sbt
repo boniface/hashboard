@@ -57,9 +57,14 @@ libraryDependencies += "com.livestream" %% "scredis" % "2.0.2"
 
 libraryDependencies += "net.debasishg" %% "redisclient" % "2.13"
 
-libraryDependencies += "com.mohiva" %% "play-silhouette" % "2.0-SNAPSHOT"
-
 libraryDependencies += "net.codingwell" % "scala-guice_2.10" % "4.0.0-beta5"
+
+libraryDependencies += "org.facebook4j" % "facebook4j-core" % "2.2.2"
+
+libraryDependencies += "org.twitter4j" % "twitter4j-core" % "4.0.2"
+
+
+
 
 
 

@@ -172,7 +172,15 @@ object PostRespository extends PostRespository with DataConnection {
                       .value(_.imagePath, post.imagePath)
                       .value(_.caption, post.caption)
                       .value(_.siteCode, post.siteCode)
-                      .future()
+                      .future() flatMap {
+                      _ => {
+                        PublishedLinksRepository.insert
+                          .value(_.linkhash, post.linkhash)
+                          .value(_.item,"POST")
+                          .ttl(604000)
+                          .future()
+                      }
+                    }
                   }
                 }
               }

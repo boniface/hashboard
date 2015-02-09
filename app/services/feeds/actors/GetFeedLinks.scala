@@ -31,14 +31,11 @@ object GetFeedLinks {
 
   private def postLinks(feed: Feed) = {
     val f: Future[List[SyndEntry]] = Future {
-
       val config = new Configuration
       config.setBrowserUserAgent("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36")
       val goose = new Goose(config)
       val article = goose.extractContent(feed.feedLink)
-
       val inputStream = IOUtils.toInputStream(article.getRawHtml(), "UTF-8")
-
       val read = new XmlReader(inputStream)
       new SyndFeedInput().build(read).getEntries.asScala.toList
 

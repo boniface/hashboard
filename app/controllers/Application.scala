@@ -34,6 +34,9 @@ object Application extends Controller {
       web <- WebSiteRepository.createTable()
       cpl <-CustomProcessedLinkskRepository.createTable()
       sp <-SinglePostRepository.createTable()
+      op <-OpenFeedRepository.createTable()
+      ps <-PublishedLinksRepository.createTable()
+      soc <-SocialRepository.createTable()
     } yield (site)
     results map (result => {
       Ok(Json.toJson("Done"))

@@ -12,9 +12,8 @@ import scala.concurrent.ExecutionContext.Implicits.global
 class CustomFeedsActor extends Actor with ActorLogging {
   override def receive: Receive = {
     case ZoneMessage(zone) => {
-
       GetCustomFeedLinks.processCustomFeeds(zone)
-
+      GetOpenFeedLinks.processOpenFeeds(zone)
     }
   }
 }

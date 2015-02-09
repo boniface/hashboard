@@ -12,7 +12,7 @@ object DataConnection {
   val keySpace = "hashmedia"
 
   lazy val cluster = Cluster.builder()
-    .addContactPoints("node1","node2")
+    .addContactPoints("localhost")
     .withPort(9042)
     .withoutJMXReporting()
     .withoutMetrics()

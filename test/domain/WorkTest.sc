@@ -1,11 +1,13 @@
 import java.io.File
 import java.net.URL
-
+import java.util.{Date, UUID}
 import com.gargoylesoftware.htmlunit.WebClient
 import com.gravity.goose.{Configuration, Goose}
 import com.rometools.rome.io.{SyndFeedInput, XmlReader}
+import conf.Util
 import de.l3s.boilerpipe.BoilerpipeExtractor
 import de.l3s.boilerpipe.extractors.CommonExtractors
+import domain.ErrorReport
 import org.apache.commons.io.IOUtils
 import org.apache.http.client.HttpClient
 import org.apache.http.client.methods.HttpGet
@@ -13,30 +15,55 @@ import org.apache.http.impl.client.HttpClients
 import org.jsoup.Connection.Response
 import org.jsoup.Jsoup
 import respository.{CustomFeedRepository, CustomLinkRepository, CustomProcessedLinkskRepository}
+import services.feeds.actors.Clink
 import scala.collection.JavaConverters._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.util.{Failure, Success, Try}
-
 // Custom Feeds Testing
-val feed = "http://www.vanguardngr.com/feed/"
+val feed = "http://www.botswanaguardian.co.bw/news.html"
 val ltfeed = "http://www.lusakatimes.com/feed/atom/"
 val zwd = "http://www.zambianwatchdog.com/feed/"
 val zr = "http://zambiareports.com/feed/"
-val config = new Configuration
-config.setBrowserUserAgent("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36")
-println(" the Browser is ",config.getBrowserUserAgent())
-val goose = new Goose(config)
-val article = goose.extractContent(feed)
-//val article = goose.extractContent(url)
 
-val in = IOUtils.toInputStream(article.getRawHtml(), "UTF-8")
+private def getLinksFromCustomFeeds(feed:String) = {
+  val plinks = scala.collection.mutable.MutableList[Clink]()
 
-val read = new XmlReader(in)
+  val links = List[String]()
 
-val fd = new SyndFeedInput().build(read).getEntries.asScala.toList
+  Try(Jsoup.connect(feed)
+    .userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36")
+    .referrer("https://www.google.com")
+    .get()
+    .select("a[href]")
+    .asScala
+    .filter(link => link.attr("abs:href")
+    .contains("news/"))) match {
+    case Success(result) => result foreach (link => {
+      val r = link.attr("abs:href")
 
-println("The Size is ",fd.size)
-fd foreach(entry=>{
-println("THE Link is ",entry.getLink)
-})
+      println("The Link is ", links :+ r)
+//      if (r.size > 1) {
+//        plinks.+=(Clink(Util.getIntFromString(r(1)), link.attr("abs:href"), link.text(), "ZM"))
+//      }
+      links
+    })
+    case Failure(ex) => {
+      println("There is a Error!!!!!!!")
+      val error = ErrorReport("ZM", UUID.randomUUID().toString, feed, new Date, "CUSTOM FEED ERROR: " + ex.getMessage)
+      scala.collection.mutable.MutableList[Clink]()
+    }
+  }
+
+
+
+
+//  val filteredLinks = filterLinks(plinks)
+//
+//  filteredLinks
+}
+val feds = getLinksFromCustomFeeds(feed)
+//println(" THE FEED SIZE IS ",feds.size)
+//private def filterLinks(links: scala.collection.mutable.MutableList[Clink]) = {
+//  links.filter(link => link.title.length > 12).sortBy(link => link.id).reverse take (20)
+//}
 
