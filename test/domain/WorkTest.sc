@@ -16,6 +16,8 @@ import org.jsoup.Connection.Response
 import org.jsoup.Jsoup
 import respository.{CustomFeedRepository, CustomLinkRepository, CustomProcessedLinkskRepository}
 import services.feeds.actors.Clink
+import twitter4j.{Query, TwitterFactory}
+import twitter4j.conf.ConfigurationBuilder
 import scala.collection.JavaConverters._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.util.{Failure, Success, Try}
@@ -24,7 +26,6 @@ val feed = "http://www.botswanaguardian.co.bw/news.html"
 val ltfeed = "http://www.lusakatimes.com/feed/atom/"
 val zwd = "http://www.zambianwatchdog.com/feed/"
 val zr = "http://zambiareports.com/feed/"
-
 private def getLinksFromCustomFeeds(feed:String) = {
   val plinks = scala.collection.mutable.MutableList[Clink]()
 
@@ -66,4 +67,15 @@ val feds = getLinksFromCustomFeeds(feed)
 //private def filterLinks(links: scala.collection.mutable.MutableList[Clink]) = {
 //  links.filter(link => link.title.length > 12).sortBy(link => link.id).reverse take (20)
 //}
+val  cb = new ConfigurationBuilder()
+cb.setDebugEnabled(true)
+  .setOAuthConsumerKey("GmIKKGsaecNNOeAiJh8xf8cup")
+  .setOAuthConsumerSecret("RTb3xQ5kwRqpn1Yij04jlWnUtmrAe69YOHYq0x8aUWanO7kQ2Y")
+  .setOAuthAccessToken("2994411497-dA79vLUbrzvrH5Uuucvcz4RgLUgnvbcLROm2ESb")
+  .setOAuthAccessTokenSecret("p1EOUaeieJ6oyM5VXJFvwMegJs9acUCd491QRbPJ3Al4N")
+val  tf = new TwitterFactory(cb.build())
+val twitter =tf.getInstance()
+val message="All Zambian News from All Major Online Sites http://www.zambiahash.com #Zambia"
 
+twitter.updateStatus("Hello , This is a sample tweet")
+val statuses = twitter.getHomeTimeline

@@ -6,6 +6,7 @@ import com.websudos.phantom.Implicits._
 import com.websudos.phantom.keys.PartitionKey
 import conf.DataConnection
 import domain.{Link, Social}
+import respository.SiteRepository._
 
 import scala.concurrent.Future
 
@@ -17,6 +18,7 @@ class SocialRepository extends CassandraTable[SocialRepository, Social] {
   object service extends StringColumn(this) with PartitionKey[String]
 
   object props extends MapColumn[SocialRepository, Social, String, String](this)
+  object tags extends ListColumn[SocialRepository, Social, String](this)
 
   override def fromRow(row: Row): Social = {
     Social(
@@ -33,6 +35,7 @@ object SocialRepository extends SocialRepository with DataConnection {
     insert
       .value(_.service, social.service)
       .value(_.props, social.props)
+      .value(_.tags,social.tags)
       .future()
   }
 
@@ -40,5 +43,7 @@ object SocialRepository extends SocialRepository with DataConnection {
     select.where(_.service eqs service).one()
   }
 
-
+  def deleteSocial(service:String): Future[ResultSet] = {
+    delete.where(_.service eqs service).future()
+  }
 }

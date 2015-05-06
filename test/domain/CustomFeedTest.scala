@@ -34,6 +34,4 @@ class CustomFeedTest extends  FeatureSpec with GivenWhenThen{
     }
   }
 
-
-
 }

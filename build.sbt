@@ -4,7 +4,7 @@ version := "1.0-SNAPSHOT"
 
 lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
-scalaVersion := "2.10.4"
+scalaVersion := "2.11.6"
 
 libraryDependencies ++= Seq(
   jdbc,
@@ -15,15 +15,15 @@ libraryDependencies ++= Seq(
 
 resolvers += "Sonatype Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots/"
 
-libraryDependencies += "com.websudos" % "phantom-dsl_2.10" % "1.4.0"
+libraryDependencies += "com.websudos" % "phantom-dsl_2.11" % "1.5.0"
 
-libraryDependencies += "com.datastax.cassandra" % "cassandra-driver-core" % "2.1.2"
+libraryDependencies += "com.datastax.cassandra" % "cassandra-driver-core" % "2.1.4"
 
 libraryDependencies += "joda-time" % "joda-time" % "2.5"
 
 libraryDependencies += "org.scala-lang.modules" % "scala-async_2.10" % "0.9.2"
 
-libraryDependencies += "org.scalatest" % "scalatest_2.10" % "2.2.2"
+libraryDependencies += "org.scalatest" % "scalatest_2.11" % "2.2.4"
 
 libraryDependencies += "com.google.code.gson" % "gson" % "2.3.1"
 
@@ -49,19 +49,30 @@ libraryDependencies += "com.syncthemall" % "goose" % "2.1.25"
 
 libraryDependencies += "org.apache.httpcomponents" % "httpclient" % "4.3.3"
 
-libraryDependencies += "com.github.slugify" % "slugify" % "2.1.2"
+libraryDependencies += "com.github.slugify" % "slugify" % "2.1.3"
 
 libraryDependencies += "com.syncthemall" % "boilerpipe" % "1.2.2"
 
-libraryDependencies += "com.livestream" %% "scredis" % "2.0.2"
+libraryDependencies += "com.livestream" % "scredis_2.11" % "2.0.6"
 
-libraryDependencies += "net.debasishg" %% "redisclient" % "2.13"
+libraryDependencies += "net.debasishg" % "redisclient_2.11" % "2.14"
 
-libraryDependencies += "net.codingwell" % "scala-guice_2.10" % "4.0.0-beta5"
+libraryDependencies += "net.codingwell" % "scala-guice_2.11" % "4.0.0-beta5"
 
 libraryDependencies += "org.facebook4j" % "facebook4j-core" % "2.2.2"
 
+libraryDependencies += "org.twitter4j" % "twitter4j" % "4.0.2"
+
+libraryDependencies += "org.twitter4j" % "twitter4j-async" % "4.0.2"
+
 libraryDependencies += "org.twitter4j" % "twitter4j-core" % "4.0.2"
+
+libraryDependencies += "org.twitter4j" % "twitter4j-media-support" % "4.0.2"
+
+libraryDependencies += "net.codingwell" % "scala-guice_2.11" % "4.0.0-beta5"
+
+
+
 
 
 

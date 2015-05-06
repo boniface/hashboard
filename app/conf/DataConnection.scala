@@ -1,5 +1,7 @@
 package conf
 
+
+
 import com.datastax.driver.core.{Session, Cluster}
 import com.websudos.phantom.Implicits._
 

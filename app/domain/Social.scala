@@ -7,7 +7,8 @@ import play.api.libs.json.Json
  */
 case class Social(
                    service: String,
-                   props: Map[String, String]
+                   props: Map[String, String],
+                   tags:List[String]
                    )
 
 object Social {
