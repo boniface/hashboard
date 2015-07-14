@@ -14,6 +14,7 @@ object Application extends Controller {
     Ok(views.html.index("Hello Your new application is ready."+value))
   }
 
+
   def options(path: String) = Action {
     Ok("")
   }
